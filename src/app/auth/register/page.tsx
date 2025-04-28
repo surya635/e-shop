@@ -1,16 +1,17 @@
-'use client';
+"use client";
 
-import axios from 'axios';
-import React, { useState } from 'react';
+import axios from "axios";
+import React, { useState } from "react";
 
 const RegisterPage: React.FC = () => {
   const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
+    name: "",
+    email: "",
+    password: "",
+    avatar: "",
   });
 
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -21,12 +22,15 @@ const RegisterPage: React.FC = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users`, formData); 
-      setMessage('Register berhasil! 🎉');
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/users`,
+        formData
+      );
+      setMessage("Register berhasil! 🎉");
       console.log(res.data);
     } catch (err: any) {
-      console.error('Gagal register:', err);
-      setMessage('Register gagal. Cek input atau server.');
+      console.error("Gagal register:", err);
+      setMessage("Register gagal. Cek input atau server.");
     }
   };
 
@@ -35,26 +39,45 @@ const RegisterPage: React.FC = () => {
       <h1 className="text-3xl font-bold mb-6 text-gray-800">Register</h1>
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-lg shadow-md w-full max-w-md"
+        className="bg-white p-8 rounded-lg shadow-md w-full max-w-md flex flex-col gap-4"
       >
-        <div className="mb-4">
+        <div>
           <label
-            htmlFor="username"
+            htmlFor="avatar"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
+            Insert Avatar URL
+          </label>
+          <input
+            type="text"
+            id="avatar"
+            name="avatar"
+            value={formData.avatar}
+            onChange={handleChange}
+            required
+            className="w-full px-3 py-2 border text-black border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
+
+        <div>
+          <label
+            htmlFor="name"
             className="block text-sm font-medium text-gray-700 mb-1"
           >
             Username
           </label>
           <input
             type="text"
-            id="username"
-            name="username"
-            value={formData.username}
+            id="name"
+            name="name"
+            value={formData.name}
             onChange={handleChange}
             required
             className="w-full px-3 py-2 border text-black border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
-        <div className="mb-4">
+
+        <div>
           <label
             htmlFor="email"
             className="block text-sm font-medium text-gray-700 mb-1"
@@ -71,7 +94,8 @@ const RegisterPage: React.FC = () => {
             className="w-full px-3 py-2 border text-black border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
-        <div className="mb-6">
+
+        <div>
           <label
             htmlFor="password"
             className="block text-sm font-medium text-gray-700 mb-1"
@@ -88,13 +112,16 @@ const RegisterPage: React.FC = () => {
             className="w-full px-3 py-2 border text-black border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
+
         <button
           type="submit"
           className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
         >
           Register
         </button>
-        {message && <p className="mt-4 text-center text-sm text-green-600">{message}</p>}
+        {message && (
+          <p className="mt-4 text-center text-sm text-green-600">{message}</p>
+        )}
       </form>
     </div>
   );
